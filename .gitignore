@@ -1,12 +1,39 @@
-/.bundle/
-/.yardoc
-/Gemfile.lock
-/_yardoc/
+# bundler state
+/.bundle
+
+# various artifacts
+/coverage.data
 /coverage/
-/doc/
+/spec/tmp/*
+/cache
+/capybara*
+/capybara-*.html
+rerun.txt
+.zeus.sock
 /pkg/
-/spec/reports/
 /tmp/
 
-# rspec failure tracking
+# documentation
+/.yardoc
+/_yardoc/
+/doc/
+
+
+# rspec
 .rspec_status
+/spec/reports/
+
+# scm revert files
+**.orig
+
+# Mac finder artifacts
+.DS_Store
+
+# RubyMine project files
+.idea
+
+# Textmate project files
+/*.tmproj
+
+# vim artifacts
+**.swp
