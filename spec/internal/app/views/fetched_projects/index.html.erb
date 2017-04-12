@@ -1,0 +1,19 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sigmund Test App</title>
+</head>
+<body>
+
+<ul>
+  <%- projects.each do |project| %>
+    <li>
+      <strong><%= project.name %></strong>
+    </li>
+  <%- end %>
+</ul>
+
+</body>
+</html>

@@ -4,7 +4,6 @@
 # various artifacts
 /coverage.data
 /coverage/
-/spec/tmp/*
 /cache
 /capybara*
 /capybara-*.html
@@ -22,6 +21,8 @@ rerun.txt
 # rspec
 .rspec_status
 /spec/reports/
+/spec/tmp/*
+/spec/internal/log/
 
 # scm revert files
 **.orig

@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sigmund Test App</title>
+</head>
+<body>
+
+  <ul>
+    <li>
+      <a href="<%= Sigmund.basecamp_oauth_url(redirect_url: fetched_projects_url(provider: :basecamp))%>">Import From Basecamp 3</a>
+    </li>
+
+    <li>
+      <form action="<%= fetched_projects_path %>" method="get">
+        <input type="hidden" name="provider" value="trello">
+
+        <label for="trello_app_key">Trello App Key</label>
+        <input  type="text" name="trello_app_key">
+
+        <label for="trello_api_token">Trello Api Token</label>
+        <input  type="text" name="trello_api_token">
+
+
+        <input type="submit" value="Import From Trello">
+
+        <a href="https://trello.com/app-key">Get those info here</a>
+      </form>
+
+    </li>
+
+  </ul>
+
+</body>
+</html>
