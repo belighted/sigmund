@@ -10,7 +10,9 @@
 <ul>
   <%- projects.each do |project| %>
     <li>
-      <strong><%= project.name %></strong>
+      <strong>
+        <%= link_to project.name, project.url %>
+      </strong>
     </li>
   <%- end %>
 </ul>

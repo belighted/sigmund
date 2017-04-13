@@ -9,7 +9,6 @@ module Sigmund
     end
 
     before do
-      stub_request(:get, %r|api.trello.com/.*/organizations|).to_return(body: trello_organizations_body)
       stub_request(:get, %r|api.trello.com/.*/boards|).to_return(body: trello_boards_body)
     end
 
@@ -18,7 +17,7 @@ module Sigmund
       it "sends the correct API request" do
         subject.fetch
 
-        expect(WebMock).to have_requested(:get, "https://api.trello.com/1/organizations/#{account_id}/boards")
+        expect(WebMock).to have_requested(:get, "https://api.trello.com/1/members/me/boards")
                                .with(query:
                                          hash_including(
                                              key: app_key,

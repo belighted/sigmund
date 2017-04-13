@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday_middleware", "~> 0.11.0"
   spec.add_dependency "activesupport", "~> 5.0.2"
   spec.add_dependency "oauth2", "~> 1.3.1"
+  spec.add_dependency 'addressable', '~> 2.5'
 
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 10.0"

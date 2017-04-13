@@ -9,8 +9,8 @@ module Sigmund
     end
 
     before do
-      stub_request(:get, %r|https://launchpad.37signals.com/authorization.json|).to_return(body: basecamp_authorization_body)
-      stub_request(:get, %r|#{account_base_url}/projects.json|).to_return(body: projects_body)
+      stub_request(:get, %q|https://launchpad.37signals.com/authorization.json|).to_return(body: basecamp_authorization_body)
+      stub_request(:get, %Q|#{account_base_url}/projects.json|).to_return(body: projects_body)
     end
 
     describe "#fetch" do
@@ -31,6 +31,27 @@ module Sigmund
         expect(project.provider).to eq :basecamp
         expect(project.uid).to be_present
         expect(project.name).to be_present
+      end
+
+      it "handles multiple page" do
+        next_page_url = "#{account_base_url}/projects.json?page=2"
+        stub_request(:get, %Q|#{account_base_url}/projects.json|)
+            .to_return(
+                body: projects_body,
+                headers: {
+                    "Link" =>  next_page_url
+                }
+            )
+        stub_request(:get, next_page_url)
+            .to_return(
+                body: projects_body,
+            )
+
+
+        subject.fetch
+
+        expect(WebMock).to have_requested(:get, next_page_url)
+
       end
 
 

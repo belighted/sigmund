@@ -19,10 +19,8 @@ module Sigmund
     end
 
     def fetch
-      response = http_connection.get("#{account_base_url}/projects.json")
-
-      response.body.map do |project|
-        Project.new(provider: PROVIDER_CODE, uid: project['id'], name: project['name'], url: project['app_url'])
+      account_base_urls.flat_map do |account_base_url|
+        fetch_page_and_next("#{account_base_url}/projects.json")
       end
     end
 
@@ -30,15 +28,33 @@ module Sigmund
 
     attr_reader :access_token
 
-    def account_base_url
-      return @account_base_url if @account_base_url
+    def account_base_urls
+      return @account_base_urls if @account_base_urls
 
       response = http_connection.get("https://launchpad.37signals.com/authorization.json")
-      account = response.body["accounts"].detect{|account|
-        ["bc3", "bc2", "bcx"].include? account["product"]
-      }
-      @account_base_url = account["href"] # https://github.com/basecamp/api/blob/master/sections/authentication.md#get-authorization
+      @account_base_urls = response.body["accounts"]
+                               .select{|account|  ["bc3", "bc2", "bcx"].include? account["product"]  }
+                               .map{|account|  account["href"]  } # https://github.com/basecamp/api/blob/master/sections/authentication.md#get-authorization
     end
+
+    def fetch_page_and_next(maybe_url)
+      return [] if maybe_url.blank?
+
+      response = http_connection.get(maybe_url)
+
+      page_projects = parse_page(response.body)
+
+      next_page = response.headers["Link"]
+      page_projects + fetch_page_and_next(next_page) # https://github.com/basecamp/bc3-api/blob/master/README.md#pagination
+    end
+
+    def parse_page(body)
+      body.map do |project|
+        Project.new(provider: PROVIDER_CODE, uid: project['id'], name: project['name'], url: project['app_url'])
+      end
+    end
+
+
 
     def http_connection
       @http_connection ||= Faraday.new do |faraday|
@@ -48,7 +64,7 @@ module Sigmund
         faraday.headers['User-Agent'] = 'Sigmund (https://github.com/belighted/sigmund)'
         faraday.headers['Content-Type'] = 'application/json'
 
-        faraday.response :logger                  # log requests to STDOUT
+        # faraday.response :logger                  # log requests to STDOUT
         faraday.response :json
 
 

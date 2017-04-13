@@ -27,9 +27,8 @@ class FetchedProjectsController < ApplicationController
   def build_trello_fetcher
     app_key = params[:trello_app_key]
     api_token = params[:trello_api_token]
-    account_id = params[:trello_account_id]
 
-    Sigmund::Providers::Trello::Fetcher.new(app_key: app_key, api_token: api_token, account_id: account_id)
+    Sigmund::Providers::Trello::Fetcher.new(app_key: app_key, api_token: api_token)
   end
 
 

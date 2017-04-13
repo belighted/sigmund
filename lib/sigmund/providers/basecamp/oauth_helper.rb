@@ -1,4 +1,5 @@
 require 'oauth2'
+require "addressable/uri"
 
 module Sigmund
   module Providers::Basecamp
@@ -32,9 +33,16 @@ module Sigmund
        def access_token_for_oauth_callback_request(request)
          assert_no_error(request)
 
+         redirect_uri = Addressable::URI.parse(request.url)
+
+         params = redirect_uri.query_values
+         params.delete('code') #=> "one"
+         redirect_uri.query_values = params
+
+
          token = client.auth_code.get_token(
              request.params.fetch(:code),
-             :redirect_uri =>  (request.base_url + request.path),
+             :redirect_uri =>  redirect_uri.to_s ,
              type: 'web_server',
          )
 
