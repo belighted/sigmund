@@ -15,6 +15,7 @@ module Sigmund
 
       def initialize(access_token:)
         @octokit_client = Octokit::Client.new(
+            auto_paginate: true,
             :access_token => access_token,
             :user_agent => Sigmund.user_agent,
         )

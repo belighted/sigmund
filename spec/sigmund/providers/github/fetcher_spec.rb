@@ -10,7 +10,7 @@ module Sigmund
       end
 
       before do
-        stub_request(:get, %Q|https://api.github.com/user/repos|).to_return(
+        stub_request(:get, %r|https://api.github.com/user/repos|).to_return(
             body: repositories_body,
             headers: {
                 "Content-Type" => "application/json"
@@ -24,8 +24,9 @@ module Sigmund
           subject.fetch
 
           expect(WebMock).to have_requested(:get, "https://api.github.com/user/repos")
-                                 .with(headers: { "Authorization" => "token #{access_token}" })
-                                 .with(headers: { "User-Agent" => "Sigmund (https://github.com/belighted/sigmund)" })
+                                  .with(query: hash_including()) # anything
+                                  .with(headers: { "Authorization" => "token #{access_token}" })
+                                  .with(headers: { "User-Agent" => "Sigmund (https://github.com/belighted/sigmund)" })
         end
 
         it "parses correctly the response" do
