@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/belighted/sigmund.svg?branch=master)](https://travis-ci.org/belighted/sigmund)
+[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) [![Build Status](https://travis-ci.org/belighted/sigmund.svg?branch=master)](https://travis-ci.org/belighted/sigmund) [![Code Climate](https://codeclimate.com/github/belighted/sigmund.png)](https://codeclimate.com/github/belighted/sigmund)
 
 # Sigmund
 
