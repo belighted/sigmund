@@ -10,10 +10,17 @@ ActiveSupport::Dependencies.autoload_once_paths << File.dirname(__FILE__)
 module Sigmund
   Error = Class.new(StandardError)
 
-  def self.basecamp_oauth_url(redirect_url:)
-    Providers::Basecamp::OauthHelper.from_config.basecamp_oauth_url(redirect_url: redirect_url)
+  def self.user_agent
+    'Sigmund (https://github.com/belighted/sigmund)'
   end
 
+  def self.basecamp_oauth_url(redirect_url:)
+    Providers::Basecamp::OauthHelper.from_config.oauth_url(redirect_url: redirect_url)
+  end
+
+  def self.github_oauth_url(redirect_url:)
+    Providers::Github::OauthHelper.from_config.oauth_url(redirect_url: redirect_url)
+  end
 
 
   def self.sigmund_config

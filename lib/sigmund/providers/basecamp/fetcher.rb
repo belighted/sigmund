@@ -61,7 +61,7 @@ module Sigmund
 
 
         faraday.request :oauth2, access_token, token_type: 'bearer'
-        faraday.headers['User-Agent'] = 'Sigmund (https://github.com/belighted/sigmund)'
+        faraday.headers['User-Agent'] = Sigmund.user_agent
         faraday.headers['Content-Type'] = 'application/json'
 
         # faraday.response :logger                  # log requests to STDOUT

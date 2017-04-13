@@ -2,16 +2,16 @@ require 'oauth2'
 require "addressable/uri"
 
 module Sigmund
-  module Providers::Basecamp
+  module Providers::Github
 
      class OauthHelper
 
-       AUTHORIZE_URL = "https://launchpad.37signals.com/authorization/new"
-       TOKEN_URL = "https://launchpad.37signals.com/authorization/token"
+       AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
+       TOKEN_URL = "https://github.com/login/oauth/access_token"
 
        def self.from_config
-         client_id = Sigmund.sigmund_config.basecamp3_oauth_client_id
-         client_secret = Sigmund.sigmund_config.basecamp3_oauth_client_secret
+         client_id = Sigmund.sigmund_config.github_oauth_client_id
+         client_secret = Sigmund.sigmund_config.github_oauth_client_secret
          new(client_id: client_id, client_secret: client_secret)
        end
 
@@ -27,8 +27,8 @@ module Sigmund
 
        def oauth_url(redirect_url: )
          client.auth_code.authorize_url(
-             :redirect_uri => redirect_url,
-             type: 'web_server',
+             redirect_uri: redirect_url,
+             scope: "repo"
          )
        end
 
@@ -46,7 +46,9 @@ module Sigmund
          token = client.auth_code.get_token(
              request.params.fetch(:code),
              :redirect_uri =>  redirect_uri.to_s ,
-             type: 'web_server',
+             headers: {
+                 "Accept" => "application/json"
+             }
          )
 
          token.token

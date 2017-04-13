@@ -24,6 +24,11 @@ class FetchedProjectsController < ApplicationController
     Sigmund::Providers::Basecamp::Fetcher.for_oauth_callback_request(request)
   end
 
+  def build_github_fetcher
+    Sigmund::Providers::Github::Fetcher.for_oauth_callback_request(request)
+  end
+
+
   def build_trello_fetcher
     app_key = params[:trello_app_key]
     api_token = params[:trello_api_token]
