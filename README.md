@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/belighted/sigmund.svg?branch=master)](https://travis-ci.org/belighted/sigmund)
+
 # Sigmund
 
 Sigmund is a small gem which goal is to fetch projects from different providers in order to help your app onboard their new users.
