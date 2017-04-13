@@ -27,7 +27,7 @@ module Sigmund
 
 
     def http_connection
-      @http_connection ||= Faraday.new ("https://api.trello.com/1") do |faraday|
+      @http_connection ||= Faraday.new("https://api.trello.com/1") do |faraday|
 
         faraday.params[:key] = app_key
         faraday.params[:token] = api_token
