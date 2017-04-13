@@ -24,7 +24,7 @@ module Sigmund
           subject.fetch
 
           expect(WebMock).to have_requested(:get, "https://api.github.com/user/repos")
-                                  .with(query: hash_including()) # anything
+                                  .with(query: hash_including()) # anything (e.g. pagination )
                                   .with(headers: { "Authorization" => "token #{access_token}" })
                                   .with(headers: { "User-Agent" => "Sigmund (https://github.com/belighted/sigmund)" })
         end

@@ -28,6 +28,11 @@ class FetchedProjectsController < ApplicationController
     Sigmund::Providers::Github::Fetcher.for_oauth_callback_request(request)
   end
 
+  def build_pivotal_fetcher
+    api_token = params[:pivotal_api_token]
+
+    Sigmund::Providers::Pivotal::Fetcher.new(api_token: api_token)
+  end
 
   def build_trello_fetcher
     app_key = params[:trello_app_key]

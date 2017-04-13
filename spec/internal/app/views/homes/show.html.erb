@@ -18,6 +18,22 @@
 
     <li>
       <form action="<%= fetched_projects_path %>" method="get">
+        <input type="hidden" name="provider" value="pivotal">
+
+        <label for="pivotal_api_token">Pivotal Api Token</label>
+        <input  type="text" name="pivotal_api_token">
+
+
+        <input type="submit" value="Import From Pivotal">
+
+        <a href="https://www.pivotaltracker.com/profile">Get your token here</a>
+      </form>
+
+    </li>
+
+
+    <li>
+      <form action="<%= fetched_projects_path %>" method="get">
         <input type="hidden" name="provider" value="trello">
 
         <label for="trello_app_key">Trello App Key</label>
