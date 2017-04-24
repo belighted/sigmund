@@ -40,8 +40,7 @@ module Sigmund
          code = request.params.fetch(:code)
 
          client.auth_code
-             .get_token(
-                 code,
+             .get_token(code,
                  redirect_uri: redirect_uri ,
                  type: 'web_server',
              )
