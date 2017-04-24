@@ -9,6 +9,8 @@ module Sigmund
        AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
        TOKEN_URL = "https://github.com/login/oauth/access_token"
 
+       include GenericOauthHelper
+
        def self.from_config
          client_id = Sigmund.sigmund_config.github_oauth_client_id
          client_secret = Sigmund.sigmund_config.github_oauth_client_secret
@@ -38,14 +40,11 @@ module Sigmund
          redirect_uri = redirect_uri_for(request)
          code = request.params.fetch(:code)
 
-         client
-             .auth_code
+         client.auth_code
              .get_token(
                  code,
                  redirect_uri: redirect_uri ,
-                 headers: {
-                     "Accept" => "application/json"
-                 }
+                 headers: { "Accept" => "application/json" }
              )
              .token
        end
@@ -54,28 +53,6 @@ module Sigmund
 
        attr_reader :client, :client_id, :client_secret
 
-       def assert_no_error(request)
-         return unless request.params.key?('error')
-         raise Error.new(request.params['error'])
-       end
-
-
-       def redirect_uri_for(request)
-         redirect_uri = Addressable::URI.parse(request.url)
-
-         params = redirect_uri.query_values || {}
-         params.delete('code')
-
-         redirect_uri.query_values = params.any? ? params : nil
-         redirect_uri
-       end
-
-
-
      end
-
-
-
-
   end
 end

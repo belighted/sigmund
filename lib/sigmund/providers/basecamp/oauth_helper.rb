@@ -3,11 +3,12 @@ require "addressable/uri"
 
 module Sigmund
   module Providers::Basecamp
-
      class OauthHelper
 
        AUTHORIZE_URL = "https://launchpad.37signals.com/authorization/new"
        TOKEN_URL = "https://launchpad.37signals.com/authorization/token"
+
+       include GenericOauthHelper
 
        def self.from_config
          client_id = Sigmund.sigmund_config.basecamp3_oauth_client_id
@@ -38,8 +39,7 @@ module Sigmund
          redirect_uri = redirect_uri_for(request)
          code = request.params.fetch(:code)
 
-         client
-             .auth_code
+         client.auth_code
              .get_token(
                  code,
                  redirect_uri: redirect_uri ,
@@ -52,27 +52,6 @@ module Sigmund
 
        attr_reader :client, :client_id, :client_secret
 
-       def assert_no_error(request)
-         return unless request.params.key?('error')
-         raise Error.new(request.params['error'])
-       end
-
-       def redirect_uri_for(request)
-         redirect_uri = Addressable::URI.parse(request.url)
-
-         params = redirect_uri.query_values || {}
-         params.delete('code')
-
-         redirect_uri.query_values = params.any? ? params : nil
-         redirect_uri
-       end
-
-
-
      end
-
-
-
-
   end
 end
