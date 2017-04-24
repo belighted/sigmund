@@ -35,23 +35,19 @@ module Sigmund
        def access_token_for_oauth_callback_request(request)
          assert_no_error(request)
 
-         redirect_uri = Addressable::URI.parse(request.url)
+         redirect_uri = redirect_uri_for(request)
+         code = request.params.fetch(:code)
 
-         params = redirect_uri.query_values || {}
-         params.delete('code')
-
-         redirect_uri.query_values = params.any? ? params : nil
-
-
-         token = client.auth_code.get_token(
-             request.params.fetch(:code),
-             :redirect_uri =>  redirect_uri.to_s ,
-             headers: {
-                 "Accept" => "application/json"
-             }
-         )
-
-         token.token
+         client
+             .auth_code
+             .get_token(
+                 code,
+                 redirect_uri: redirect_uri ,
+                 headers: {
+                     "Accept" => "application/json"
+                 }
+             )
+             .token
        end
 
        private
@@ -61,6 +57,17 @@ module Sigmund
        def assert_no_error(request)
          return unless request.params.key?('error')
          raise Error.new(request.params['error'])
+       end
+
+
+       def redirect_uri_for(request)
+         redirect_uri = Addressable::URI.parse(request.url)
+
+         params = redirect_uri.query_values || {}
+         params.delete('code')
+
+         redirect_uri.query_values = params.any? ? params : nil
+         redirect_uri
        end
 
 

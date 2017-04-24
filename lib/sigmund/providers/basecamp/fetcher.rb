@@ -54,11 +54,12 @@ module Sigmund
         end
       end
 
-
       def http_connection
-        @http_connection ||= Faraday.new do |faraday|
+        @http_connection ||= build_http_connection
+      end
 
-
+      def build_http_connection
+        Faraday.new do |faraday|
           faraday.request :oauth2, access_token, token_type: 'bearer'
           faraday.headers['User-Agent'] = Sigmund.user_agent
           faraday.headers['Content-Type'] = 'application/json'
@@ -66,10 +67,7 @@ module Sigmund
           # faraday.response :logger                  # log requests to STDOUT
           faraday.response :json
 
-
           faraday.adapter Faraday.default_adapter # make requests with Net::HTTP
-
-
         end
       end
 

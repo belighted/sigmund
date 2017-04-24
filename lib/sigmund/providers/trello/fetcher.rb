@@ -12,11 +12,11 @@ module Sigmund
     end
     
     def fetch
-      response = http_connection.get("members/me/boards?filter=open&fields=name,url")
+      http_connection
+          .get("members/me/boards?filter=open&fields=name,url")
+          .body
+          .map { |board| build_project_from_board(board) }
 
-      response.body.map do |board|
-        Project.new(provider: PROVIDER_CODE, uid: board['id'], name: board['name'], url: board['url'])
-      end
     rescue Faraday::ClientError => e
       raise Error.new(e.message)
     end
@@ -25,10 +25,22 @@ module Sigmund
 
     attr_reader :app_key, :api_token
 
+    def build_project_from_board(board)
+      Project.new(
+          provider: PROVIDER_CODE,
+          uid: board['id'],
+          name: board['name'],
+          url: board['url']
+      )
+    end
+
 
     def http_connection
-      @http_connection ||= Faraday.new("https://api.trello.com/1") do |faraday|
+      @http_connection ||= build_http_connection
+    end
 
+    def build_http_connection
+      Faraday.new("https://api.trello.com/1") do |faraday|
         faraday.params[:key] = app_key
         faraday.params[:token] = api_token
         faraday.headers['Content-Type'] = 'application/json'
@@ -38,7 +50,6 @@ module Sigmund
         faraday.response :raise_error
 
         faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-
       end
     end
 
