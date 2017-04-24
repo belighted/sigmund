@@ -76,7 +76,7 @@ module Sigmund
       def setup_faraday_response(faraday)
         # # faraday.response :logger                  # log requests to STDOUT
         faraday.response :json
-        faraday.response.raise_error
+        faraday.response :raise_error
       end
 
     end
