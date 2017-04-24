@@ -37,12 +37,10 @@ module Sigmund
        def access_token_for_oauth_callback_request(request)
          assert_no_error(request)
 
-         redirect_uri = redirect_uri_for(request)
-         code = request.params.fetch(:code)
-
          client.auth_code
-             .get_token(code,
-                 redirect_uri: redirect_uri ,
+             .get_token(
+                 request.params.fetch(:code),
+                 redirect_uri: redirect_uri_for(request) ,
                  headers: { "Accept" => "application/json" }
              )
              .token
